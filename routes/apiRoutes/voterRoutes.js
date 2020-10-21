@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../db/database");
 const inputCheck = require("../../utils/inputCheck");
+
 // get route for all voters
 router.get("/voters", (req, res) => {
   const sql = `SELECT * FROM voters ORDER BY last_name`;
@@ -88,6 +89,20 @@ router.put("/voter/:id", (req, res) => {
       data: req.body,
       changes: this.changes,
     });
+  });
+});
+
+// create a delete route
+router.delete("/voter/:id", (req, res) => {
+  const sql = `DELETE FROM voters WHERE id = ?`;
+
+  db.run(sql, req.params.id, function (err, result) {
+    if (err) {
+      res.status(400).json({ error: res.message });
+      return;
+    }
+
+    res.json({ message: "deleted", changes: this.changes });
   });
 });
 

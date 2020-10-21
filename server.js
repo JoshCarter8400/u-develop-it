@@ -1,18 +1,19 @@
 const express = require("express");
-// const sqlite3 = require("sqlite3").verbose();
 const db = require("./db/database");
-const inputCheck = require("./utils/inputCheck");
+
 const PORT = process.env.PORT || 3001;
 const app = express();
 
 const apiRoutes = require("./routes/apiRoutes");
-app.use("/api", apiRoutes);
 
 // Express middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// Default response for any other request(Not Found) Catch all
+// Use apiRoutes
+app.use("/api", apiRoutes);
+
+// Default response for any other request (Not Found)
 app.use((req, res) => {
   res.status(404).end();
 });
